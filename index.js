@@ -12,7 +12,7 @@
   var gameOverlayer = document.getElementById("overlay");
   const floor = document.getElementById("floor");
 
-  var audio = new Audio("assets/carrot2.wav");
+  const audio = new Audio("assets/carrot2.wav");
 
   const ctx = canvas.getContext("2d");
   const engine = Engine.create();
