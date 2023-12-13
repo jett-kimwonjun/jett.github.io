@@ -302,7 +302,7 @@
       //cancelAnimationFrame(this._animationFrame);  //thomas
       refreshLoop();
     });
-    window.cancelAnimationFrame(rafvalue);
+    window.cancelAnimationFrame(rafValue);
   }
 
   function isMobile() {
