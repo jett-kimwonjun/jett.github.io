@@ -241,7 +241,7 @@
       ctx.rect(0, 0, 480, 720);
       ctx.fill();
 
-      writeText("캐롯 운전자보험을 보러갈까요?", "center", 240, 280, 50);
+      writeText("운전자보험은 캐롯!", "center", 240, 280, 50);
       writeText("스코어: " + score, "center", 240, 320, 30);
     } else {
       writeText(score, "다시하기", 25, 60, 40);
