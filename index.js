@@ -12,6 +12,8 @@
   var gameOverlayer = document.getElementById("overlay");
   const floor = document.getElementById("floor");
 
+  var audio = new Audio("assets/carrot2.wav");
+
   const ctx = canvas.getContext("2d");
   const engine = Engine.create();
   const render = Render.create({
@@ -228,8 +230,8 @@
 
           score += bodies[0].size;
 
-          //var audio = new Audio("assets/carrot.wav");
-          //audio.play();
+          
+          audio.play();
         }
       }
     });
