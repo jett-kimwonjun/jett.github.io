@@ -1,11 +1,11 @@
 (() => {
-  const Engine = Matter.Engine,
-    Render = Matter.Render,
-    World = Matter.World,
-    Body = Matter.Body,
-    Bodies = Matter.Bodies,
-    Events = Matter.Events,
-    Composite = Matter.Composite;
+  const Engine    = Matter.Engine,
+        Render    = Matter.Render,
+        World     = Matter.World,
+        Body      = Matter.Body,
+        Bodies    = Matter.Bodies,
+        Events    = Matter.Events,
+        Composite = Matter.Composite;
 
   const parent = document.getElementById("game");
   const canvas = document.getElementById("canvas");
@@ -13,9 +13,7 @@
   const floor = document.getElementById("floor");
 
   const ctx = canvas.getContext("2d");
-
   const engine = Engine.create();
-
   const render = Render.create({
     canvas: canvas,
     engine: engine,
@@ -28,107 +26,75 @@
 
   const times = [];
   let fps = 100;
-
   let mousePos;
   let isClicking = false;
   let isMouseOver = false;
   let newSize = 1;
-
   let isGameOver = false;
   let score = 0;
-
   let isLineEnable = false;
-
-  const background = Bodies.rectangle(240, 360, 480, 720, {
-    isStatic: true,
-    render: { fillStyle: "#fff" },
+  
+  const background = 
+    Bodies.rectangle(240, 360, 480, 720, {
+      isStatic: true,
+      render: { fillStyle: "#fff" },
   });
-  background.collisionFilter = {
-    group: 0,
-    category: 1,
-    mask: -2,
+    background.collisionFilter = {
+      group: 0,
+      category: 1,
+      mask: -2,
   };
-  const ground = Bodies.rectangle(400, 1220, 810, 1000, {
-    isStatic: true,
-    render: { fillStyle: "transparent" },
+  
+  const ground = 
+    Bodies.rectangle(400, 1220, 810, 1000, {
+      isStatic: true,
+      render: { fillStyle: "transparent" },
   });
-  const wallLeft = Bodies.rectangle(-50, 500, 100, 1000, {
-    isStatic: true,
-    render: { fillStyle: "transparent" },
+  
+  const wallLeft = 
+    Bodies.rectangle(-50, 500, 100, 1000, {
+      isStatic: true,
+      render: { fillStyle: "transparent" },
   });
-  const wallRight = Bodies.rectangle(530, 500, 100, 1000, {
-    isStatic: true,
-    render: { fillStyle: "transparent" },
+  
+  const wallRight = 
+    Bodies.rectangle(530, 500, 100, 1000, {
+      isStatic: true,
+      render: { fillStyle: "transparent" },
   });
+  
   World.add(engine.world, [wallLeft, wallRight, ground, background]);
 
+  //start ---------------------
   Engine.run(engine);
   Render.run(render);
 
   resize();
-
   refreshLoop();
-
   init();
 
+  //resize
   window.addEventListener("resize", resize);
 
+  //마우스 이벤트
   addEventListener("mousedown", () => {
     if (isGameOver) return;
-
     isClicking = isMouseOver;
-  });
-  addEventListener("touchstart", (e) => {
-    if (isGameOver) return;
-
-    isClicking = true;
-    mousePos = e.touches[0].clientX / parent.style.zoom;
   });
 
   addEventListener("mouseup", () => {
     if (isGameOver) return;
-
     isClicking = false;
-  });
-  addEventListener("touchend", () => {
-    if (isGameOver) return;
-
-    isClicking = false;
-
-    if (isGameOver) return;
-
-    if (ball != null) {
-      ball.createdAt = 0;
-      ball.collisionFilter = {
-        group: 0,
-        category: 1,
-        mask: -1,
-      };
-      Body.setVelocity(ball, { x: 0, y: (100 / fps) * 5.5 });
-      ball = null;
-
-      newSize = Math.ceil(Math.random() * 3);
-
-      setTimeout(() => createNewBall(newSize), 500);
-    }
   });
 
   addEventListener("mousemove", (e) => {
     if (isGameOver) return;
-
     const rect = canvas.getBoundingClientRect();
     mousePos = e.clientX / parent.style.zoom - rect.left;
   });
-  addEventListener("touchmove", (e) => {
-    if (isGameOver) return;
-
-    const rect = canvas.getBoundingClientRect();
-    mousePos = e.touches[0].clientX / parent.style.zoom - rect.left;
-  });
-
+  
   addEventListener("click", () => {
     if (isGameOver || !isMouseOver) return;
-
     if (ball != null) {
       ball.createdAt = 0;
       ball.collisionFilter = {
@@ -138,11 +104,42 @@
       };
       Body.setVelocity(ball, { x: 0, y: (100 / fps) * 5.5 });
       ball = null;
-
       newSize = Math.ceil(Math.random() * 3);
-
-      setTimeout(() => createNewBall(newSize), 500);
+      console.log("==>newSize2: "+newSize);
+      setTimeout(() => createNewBall(newSize), 500); //볼 생성
     }
+  });
+
+  //터치 이벤트 (@thomas)
+  addEventListener("touchstart", (e) => {
+    if (isGameOver) return;
+    isClicking = true;
+    mousePos = e.touches[0].clientX / parent.style.zoom;
+  });
+  
+  addEventListener("touchend", () => {
+    if (isGameOver) return;
+    isClicking = false;
+    if (isGameOver) return;
+    if (ball != null) {
+      ball.createdAt = 0;
+      ball.collisionFilter = {
+        group: 0,
+        category: 1,
+        mask: -1,
+      };
+      Body.setVelocity(ball, { x: 0, y: (100 / fps) * 5.5 });
+      ball = null;
+      newSize = Math.ceil(Math.random() * 3);
+      console.log("==>newSize1 "+newSize);
+      setTimeout(() => createNewBall(newSize), 500);  //볼 생성
+    }
+  });
+  
+  addEventListener("touchmove", (e) => {
+    if (isGameOver) return;
+    const rect = canvas.getBoundingClientRect();
+    mousePos = e.touches[0].clientX / parent.style.zoom - rect.left;
   });
 
   canvas.addEventListener("mouseover", () => {
@@ -202,22 +199,18 @@
   Events.on(engine, "collisionStart", collisionEvent);
 
   function collisionEvent(e) {
-    if (isGameOver) return;
-
+    if(isGameOver) return;
+    
     e.pairs.forEach((collision) => {
       bodies = [collision.bodyA, collision.bodyB];
 
-      if (bodies[0].size === undefined || bodies[1].size === undefined) return;
+      if(bodies[0].size === undefined || bodies[1].size === undefined) 
+        return;
 
-      if (bodies[0].size === bodies[1].size) {
+      if(bodies[0].size === bodies[1].size) {
         allBodies = Composite.allBodies(engine.world);
-        if (allBodies.includes(bodies[0]) && allBodies.includes(bodies[1])) {
-          if (
-            (Date.now() - bodies[0].createdAt < 100 ||
-              Date.now() - bodies[1].createdAt < 100) &&
-            bodies[0].createdAt != 0 &&
-            bodies[1].createdAt != 0
-          ) {
+        if(allBodies.includes(bodies[0]) && allBodies.includes(bodies[1])) {
+          if((Date.now() - bodies[0].createdAt < 100 || Date.now() - bodies[1].createdAt < 100) && bodies[0].createdAt != 0 && bodies[1].createdAt != 0) {
             return;
           }
 
@@ -248,10 +241,10 @@
       ctx.rect(0, 0, 480, 720);
       ctx.fill();
 
-      writeText("Game Over", "center", 240, 280, 50);
-      writeText("Score: " + score, "center", 240, 320, 30);
+      writeText("캐롯 운전자보험을 보러갈까요?", "center", 240, 280, 50);
+      writeText("스코어: " + score, "center", 240, 320, 30);
     } else {
-      writeText(score, "start", 25, 60, 40);
+      writeText(score, "다시하기", 25, 60, 40);
 
       if (isLineEnable) {
         ctx.strokeStyle = "#f55";
@@ -298,15 +291,18 @@
   }
 
   function refreshLoop() {
-    window.requestAnimationFrame(() => {
+    rafValue = window.requestAnimationFrame(() => {
       const now = performance.now();
       while (times.length > 0 && times[0] <= now - 1000) {
         times.shift();
       }
       times.push(now);
       fps = times.length;
+
+      //cancelAnimationFrame(this._animationFrame);  //thomas
       refreshLoop();
     });
+    window.cancelAnimationFrame(rafvalue);
   }
 
   function isMobile() {
