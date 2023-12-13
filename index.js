@@ -292,21 +292,21 @@
 
   function refreshLoop() {
     rafValue = window.requestAnimationFrame(() => {
-      const now = performance.now();
-      while (times.length > 0 && times[0] <= now - 1000) {
-        times.shift();
-      }
-      times.push(now);
-      fps = times.length;
+        const now = performance.now();
+        while (times.length > 0 && times[0] <= now - 1000) {
+            times.shift();
+        }
+       times.push(now);
+       fps = times.length;
 
-      //cancelAnimationFrame(this._animationFrame);  //thomas
+       //cancelAnimationFrame(this._animationFrame);  //thomas
 
-      //if (fps >= 500) {
-        cancelAnimationFrame(this._animationFrame);  //thomas
-        //return;
-      //}
+       //if (fps >= 500) {
+         //return;
+       //}
       
-      refreshLoop();
+       cancelAnimationFrame(rafValue);  //thomas
+       refreshLoop();
     });
     //window.cancelAnimationFrame(rafValue);
     //cancelAnimationFrame(this._animationFrame);  //thomas
