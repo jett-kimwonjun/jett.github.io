@@ -228,8 +228,8 @@
 
           score += bodies[0].size;
 
-          var audio = new Audio("assets/carrot.wav");
-          audio.play();
+          //var audio = new Audio("assets/carrot.wav");
+          //audio.play();
         }
       }
     });
