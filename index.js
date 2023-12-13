@@ -300,9 +300,16 @@
       fps = times.length;
 
       //cancelAnimationFrame(this._animationFrame);  //thomas
+
+      if (fps >= 500) {
+        cancelAnimationFrame(rafValue);
+        return;
+      }
+      
       refreshLoop();
     });
-    window.cancelAnimationFrame(rafValue);
+    //window.cancelAnimationFrame(rafValue);
+    //cancelAnimationFrame(this._animationFrame);  //thomas
   }
 
   function isMobile() {
