@@ -307,7 +307,7 @@
          //return;
        //}
       
-       cancelAnimationFrame(rafValue);  //thomas
+       //cancelAnimationFrame(rafValue);  //thomas
        refreshLoop();
     });
     //window.cancelAnimationFrame(rafValue);
