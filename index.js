@@ -301,10 +301,10 @@
 
       //cancelAnimationFrame(this._animationFrame);  //thomas
 
-      if (fps >= 500) {
-        cancelAnimationFrame(rafValue);
-        return;
-      }
+      //if (fps >= 500) {
+        cancelAnimationFrame(this._animationFrame);  //thomas
+        //return;
+      //}
       
       refreshLoop();
     });
